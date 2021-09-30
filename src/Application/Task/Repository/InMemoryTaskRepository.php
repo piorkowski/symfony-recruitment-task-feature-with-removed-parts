@@ -9,27 +9,42 @@ use App\Domain\Task\Task;
 
 class InMemoryTaskRepository implements TaskRepository
 {
+    private array $tasks = [];
+
     public function save(Task $task): void
     {
-        // implement this
+        $this->tasks[$task->getId()] = $task;
     }
 
     public function get(int $id): Task
     {
-        // implement this - one task by id
+        if (array_key_exists($id, $this->tasks)) {
+            return $this->tasks[$id];
+        }
+
+        throw new TaskNotFoundException($id);
     }
 
     public function findCurrent(): array
     {
-        // implement this - return all pending tasks (not done)
-
-        return [];
+        return $this->selectTasksByDone(false);
     }
 
     public function findDone(): array
     {
-        // implement this - list of done tasks
+        return $this->selectTasksByDone(true);
+    }
 
-        return [];
+    private function selectTasksByDone(bool $isDone = false): array
+    {
+        $selectTasks = [];
+        /** @var Task $task */
+        foreach ($this->tasks as $task){
+            if($isDone === $task->isDone()){
+                $selectTasks[] = $task;
+            }
+        }
+
+        return $selectTasks;
     }
 }

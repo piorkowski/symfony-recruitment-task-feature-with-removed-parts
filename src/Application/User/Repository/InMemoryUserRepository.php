@@ -14,7 +14,7 @@ class InMemoryUserRepository implements UserRepository
      */
     private array $users = [];
 
-    public function save(User $user)
+    public function save(User $user): void
     {
         $this->users[$user->getId()] = $user;
     }
