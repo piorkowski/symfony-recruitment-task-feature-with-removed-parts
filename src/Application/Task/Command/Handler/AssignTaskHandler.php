@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Application\Task\Command\Handler;
 
+use App\Application\Notification\Command\SendNotification;
 use App\Application\Task\Command\AssignTask;
 use App\Application\Task\Repository\TaskRepository;
 use App\Application\User\Repository\UserRepository;
+use App\Domain\Notification\Notification;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -16,7 +18,11 @@ class AssignTaskHandler implements MessageHandlerInterface
     private TaskRepository $taskRepository;
     private MessageBusInterface $eventBus;
 
-    public function __construct(UserRepository $userRepository, TaskRepository $taskRepository, MessageBusInterface $eventBus)
+    public function __construct(
+        UserRepository      $userRepository,
+        TaskRepository      $taskRepository,
+        MessageBusInterface $eventBus
+    )
     {
         $this->userRepository = $userRepository;
         $this->taskRepository = $taskRepository;
@@ -29,7 +35,9 @@ class AssignTaskHandler implements MessageHandlerInterface
         $task = $this->taskRepository->get($assignTask->getTaskId());
 
         $task->assign($user);
-
         $this->taskRepository->save($task);
+
+        $notification = new Notification('Task Assigned', 'You have new assign task', $user);
+        $this->eventBus->dispatch(new SendNotification($notification));
     }
 }
