@@ -14,7 +14,11 @@ class Notification
 
     private User $user;
 
-    public function __construct(string $title, string $content, User $user)
+    public function __construct(
+        string $title,
+        string $content,
+        User   $user
+    )
     {
         $this->title = $title;
         $this->content = $content;

@@ -10,12 +10,12 @@ class DummyEmailNotifier implements Notifier
 {
     private array $sentMessages = [];
 
-    public function send(Notification $notification)
+    public function send(Notification $notification): void
     {
         $this->sentMessages[] = $notification;
     }
 
-    public function getSentMessages()
+    public function getSentMessages(): array
     {
         return $this->sentMessages;
     }

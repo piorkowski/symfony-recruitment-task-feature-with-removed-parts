@@ -8,17 +8,16 @@ use App\Domain\Notification\Notification;
 
 class NotifierChain implements Notifier
 {
-    /**
-     * @var array<Notifier>
-     */
     private array $notifiers = [];
 
-    public function __construct(iterable $notifiers)
+    public function __construct(
+        iterable $notifiers
+    )
     {
         $this->notifiers = iterator_to_array($notifiers);
     }
 
-    public function send(Notification $notification)
+    public function send(Notification $notification): void
     {
         foreach ($this->notifiers as $notifier) {
             $notifier->send($notification);

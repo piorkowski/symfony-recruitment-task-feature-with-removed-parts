@@ -18,7 +18,12 @@ class Task
 
     private ?User $assignee = null;
 
-    public function __construct(int $id, string $name, bool $done = false, ?\DateTimeImmutable $deadline = null)
+    public function __construct(
+        int                 $id,
+        string              $name,
+        bool                $done = false,
+        ?\DateTimeImmutable $deadline = null
+    )
     {
         $this->id = $id;
         $this->name = $name;
@@ -56,7 +61,7 @@ class Task
         $this->done = true;
     }
 
-    public function assign(User $user)
+    public function assign(User $user): void
     {
         $this->assignee = $user;
     }

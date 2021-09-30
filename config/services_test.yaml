@@ -6,8 +6,11 @@ services:
       class: App\Application\Task\Repository\InMemoryTaskRepository
       public: true
     App\Application\Notification\DummyEmailNotifier:
+      class: App\Application\Notification\DummyEmailNotifier
       public: true
+      tags: ['app.notifier']
     App\Application\Notification\NotifierChain:
+      class: App\Application\Notification\NotifierChain
       public: true
       arguments:
         - !tagged_iterator app.notifier
