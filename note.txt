@@ -1,0 +1,3 @@
+Directory structure (architecture) is bad. It only looks like DDD, but it is not. User and Task should be structured as application, domain, infrastructure.
+Notification should be shared in or have its own structure.
+Besides, some small things like lack of return types in functions I corrected
